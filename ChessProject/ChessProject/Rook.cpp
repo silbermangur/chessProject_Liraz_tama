@@ -9,6 +9,8 @@ void Rook::move(int col, int row)
     {
         _board[row][col] = _board[getRow()][getCol()];
         _board[getRow()][getCol()] = nullptr;
+        setCol(col);
+        setRow(row);
         return;
     }
     throw LocationException();
@@ -19,9 +21,9 @@ bool Rook::checkChess() const
 	return false;
 }
 
-bool Rook::isBloced(int col, int row) const
+bool Rook::isBlocked(int col, int row) const
 {
-    if (_board[getRow()][col] != nullptr && std::islower(getType()) == std::islower(_board[row][col]->getType()))
+    if (_board[row][col] != nullptr && std::islower(getType()) == std::islower(_board[row][col]->getType()))
     {
         return true;
     }
@@ -55,11 +57,11 @@ bool Rook::isBloced(int col, int row) const
 
 bool Rook::isMoveLegal(int col, int row) const
 {
-	if (col > 8 || col < 1 || row < 0 || row > 8 || !((col == getCol()) ^ (row == getRow())))
+	if (col > 7 || col < 0 || row < 0 || row > 7 || !((col == getCol()) ^ (row == getRow())))
 	{
 		return false;
 	}
-	if (isBloced(col, row))
+	if (isBlocked(col, row))
 	{
 		return false;
 	}

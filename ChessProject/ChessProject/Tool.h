@@ -15,7 +15,7 @@ public:
 	virtual ~Tool() {}
 	
 	virtual void move(int col, int row) = 0; 
-	virtual bool isBloced(int col, int row) const = 0;
+	virtual bool isBlocked(int col, int row) const = 0;
 	virtual bool isMoveLegal(int col, int row) const = 0;
 
 	int getCol() const;
