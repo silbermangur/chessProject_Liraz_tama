@@ -2,25 +2,28 @@
 
 #include <iostream>
 #include <string>
+#include "LocationException.h"
+
 
 class Tool
 {
 	char _type;
 	int _row;
-	char _cul;
+	int _col;
 public:
-	Tool(char cul, int row, /*Board& board*/ char type);	
+	Tool(int col, int row, Tool***& board, char type);
 	virtual ~Tool() {}
 	
-	/*virtual void move(char cul, int row);
-	virtual bool isBloced(char cul, int row) const;
-	virtual bool isMoveLegal(char cul, int row) const;*/
-	char getCul() const;
+	virtual void move(int col, int row) = 0; 
+	virtual bool isBloced(int col, int row) const = 0;
+	virtual bool isMoveLegal(int col, int row) const = 0;
+
+	int getCol() const;
 	int getRow() const;
 	void setRow(int row);
-	void setCul(char cul);
+	void setCol(int col);
 	std::string getLocation() const;
 	char getType() const;
-protected:
-	//Board board;
+
+	Tool***& _board;
 };

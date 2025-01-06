@@ -1,12 +1,11 @@
 #include "Tool.h"
-
-Tool::Tool(char cul, int row, /*Board& board*/ char type)
-	:_cul(cul), _row(row), _type(type)
+Tool::Tool(int col, int row, Tool***& board, char type)
+	:_col(col), _row(row), _type(type), _board(board)
 {}
 
-char Tool::getCul() const
+int Tool::getCol() const
 {
-	return _cul;
+	return _col;
 }
 int Tool::getRow() const
 {
@@ -16,13 +15,13 @@ void Tool::setRow(int row)
 {
 	_row = row;
 }
-void Tool::setCul(char cul)
+void Tool::setCol(int col)
 {
-	_cul = cul;
+	_col = col;
 }
 std::string Tool::getLocation() const
 {
-	return std::to_string(_cul) + std::to_string(_row);
+	return std::to_string(_col) + std::to_string(_row);
 }
 char Tool::getType() const
 {
