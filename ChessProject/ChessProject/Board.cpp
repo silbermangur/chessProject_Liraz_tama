@@ -3,8 +3,8 @@
 #include "King.h"
 Board::Board()
 {
-	_kingb = new King(0, 3, *this, 'k');
-	_KINGw = new King(7, 3, *this, 'K');
+	_kingBlack = new King(0, 3, *this, 'k');
+	_kingWhite = new King(7, 3, *this, 'K');
 	new Rook(0, 7, *this, 'r');
 	new Rook(0, 0, *this, 'r');
 	new Rook(7, 0, *this, 'R');

@@ -9,8 +9,8 @@ class Board
 {
 public:
 	Tool* _board[8][8] = {nullptr};
-	Tool* _KINGw;
-	Tool* _kingb;
+	Tool* _kingWhite;
+	Tool* _kingBlack;
 
 	Board();
 	~Board();
@@ -18,4 +18,4 @@ public:
 	void print();
 	std::string boardString();
 };
-#pragma once
+
