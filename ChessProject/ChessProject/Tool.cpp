@@ -1,7 +1,9 @@
 #include "Tool.h"
-Tool::Tool(int col, int row, Tool***& board, char type)
-	:_col(col), _row(row), _type(type), _board(board)
+Tool::Tool(int col, int row, Board& board, char type)
+	:_col(col), _row(row), _type(type), B(board)
 {}
+
+
 
 int Tool::getCol() const
 {

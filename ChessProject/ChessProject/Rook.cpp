@@ -1,14 +1,21 @@
 #include "Rook.h"
-Rook::Rook(int col, int row, Tool***& board, char type):
+
+Rook::Rook(int col, int row, Board& board, char type):
 	Tool(col, row, board, type)
-{}
+{
+    B._board[row][col] = this;
+}
 
 void Rook::move(int col, int row)
 {
     if (isMoveLegal(col, row))
     {
-        _board[row][col] = _board[getRow()][getCol()];
-        _board[getRow()][getCol()] = nullptr;
+        if (B._board[row][col] != nullptr)
+        {
+            delete(B._board[row][col]);
+        }
+        B._board[row][col] = B._board[getRow()][getCol()];
+        B._board[getRow()][getCol()] = nullptr;
         setCol(col);
         setRow(row);
         return;
@@ -23,7 +30,7 @@ bool Rook::checkChess() const
 
 bool Rook::isBlocked(int col, int row) const
 {
-    if (_board[row][col] != nullptr && std::islower(getType()) == std::islower(_board[row][col]->getType()))
+    if (B._board[row][col] != nullptr && std::islower(getType()) == std::islower(B._board[row][col]->getType()))
     {
         return true;
     }
@@ -33,7 +40,7 @@ bool Rook::isBlocked(int col, int row) const
         int maxCol = std::max(getCol(), col);
         for (col = minCol + 1; col < maxCol; col++)
         {
-            if (_board[getRow()][col] != nullptr)
+            if (B._board[getRow()][col] != nullptr)
             {
                 return true;
             }
@@ -45,7 +52,7 @@ bool Rook::isBlocked(int col, int row) const
         int maxRow = std::max(getRow(), row);
         for (int row = minRow + 1; row < maxRow; row++) 
         {
-            if (_board[row][getCol()] != nullptr)
+            if (B._board[row][getCol()] != nullptr)
             {
                 return true;
             }

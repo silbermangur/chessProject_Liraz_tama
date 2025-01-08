@@ -3,7 +3,9 @@
 #include <iostream>
 #include <string>
 #include "LocationException.h"
+#include "Board.h"
 
+class Board;
 
 class Tool
 {
@@ -11,7 +13,8 @@ class Tool
 	int _row;
 	int _col;
 public:
-	Tool(int col, int row, Tool***& board, char type);
+
+	Tool(int col, int row, Board& board, char type);
 	virtual ~Tool() {}
 	
 	virtual void move(int col, int row) = 0; 
@@ -25,5 +28,5 @@ public:
 	std::string getLocation() const;
 	char getType() const;
 
-	Tool***& _board;
+	Board& B;
 };

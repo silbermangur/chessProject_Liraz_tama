@@ -4,13 +4,17 @@
 #include <string>
 #include "Tool.h"
 
+class Tool;
 class Board
 {
-	
 public:
-	Tool* _board[8][8];
+	Tool* _board[8][8] = {nullptr};
+	Tool* _KINGw;
+	Tool* _kingb;
+
 	Board();
-	void remove(int, char);
+	~Board();
+	
 	void print();
 	std::string boardString();
 };

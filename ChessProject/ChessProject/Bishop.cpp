@@ -1,14 +1,20 @@
 #include "Bishop.h"
-Bishop::Bishop(int col, int row, Tool***& board, char type) :
+Bishop::Bishop(int col, int row, Board& board, char type) :
     Tool(col, row, board, type)
-{}
+{
+    B._board[row][col] = this;
+}
 
 void Bishop::move(int col, int row)
 {
     if (isMoveLegal(col, row))
     {
-        _board[row][col] = _board[getRow()][getCol()];
-        _board[getRow()][getCol()] = nullptr;
+        if (B._board[row][col] != nullptr)
+        {
+            delete(B._board[row][col]);
+        }
+        B._board[row][col] = B._board[getRow()][getCol()];
+        B._board[getRow()][getCol()] = nullptr;
         setCol(col);
         setRow(row);
         return;
@@ -23,45 +29,31 @@ bool Bishop::checkChess() const
 
 bool Bishop::isBlocked(int col, int row) const
 {
-    if (_board[getRow()][col] != nullptr && std::islower(getType()) == std::islower(_board[row][col]->getType()))
+    if (B._board[getRow()][col] != nullptr && std::islower(getType()) == std::islower(B._board[row][col]->getType()))
     {
         return true;
     }
-    if (getRow() == row)
+ 
+    int i = 1;
+    int  firstCol = getCol();
+    int  lestCol = col;
+    int minRow = std::min(getRow(), row);
+    int maxRow = std::max(getRow(), row);
+    if (maxRow == getRow())
     {
-        int minCol = std::min(getCol(), col);
-        int maxCol = std::max(getCol(), col);
-        for (col = minCol + 1; col < maxCol; col++)
-        {
-            if (_board[getRow()][col] != nullptr)
-            {
-                return true;
-            }
-        }
+        firstCol = col;
+        lestCol = getCol();
     }
-    if (getCol() == col)
+    if (firstCol > lestCol)
     {
-        int i = 1;
-        int  firstCol = getCol();
-        int  lestCol = col;
-        int minRow = std::min(getRow(), row);
-        int maxRow = std::max(getRow(), row);
-        if (maxRow == getRow())
+        i = -1;
+    }
+    for (int row = minRow + 1; row < maxRow; row++)
+    {
+        firstCol += i;
+        if (B._board[row][firstCol] != nullptr)
         {
-            firstCol = col;
-            lestCol = getCol();
-        }
-        if (firstCol > lestCol)
-        {
-            i = -1;
-        }
-        for (int row = minRow + 1; row < maxRow; row++)
-        {
-            firstCol += i;
-            if (_board[row][firstCol] != nullptr)
-            {
-                return true;
-            }
+            return true;
         }
     }
 
