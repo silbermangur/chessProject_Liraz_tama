@@ -1,7 +1,7 @@
 #include "Rook.h"
 
-Rook::Rook(int col, int row, Board& board, char type):
-	Tool(col, row, board, type)
+Rook::Rook(int row, int col, Board& board, char type):
+    Tool(col, row, board, type)
 {
     B._board[row][col] = this;
 }
@@ -30,10 +30,6 @@ bool Rook::checkChess() const
 
 bool Rook::isBlocked(int col, int row) const
 {
-    if (B._board[row][col] != nullptr && std::islower(getType()) == std::islower(B._board[row][col]->getType()))
-    {
-        return true;
-    }
     if (getRow() == row)
     {
         int minCol = std::min(getCol(), col);
@@ -64,14 +60,16 @@ bool Rook::isBlocked(int col, int row) const
 
 bool Rook::isMoveLegal(int col, int row) const
 {
-	if (col > 7 || col < 0 || row < 0 || row > 7 || !((col == getCol()) ^ (row == getRow())))
-	{
-		return false;
-	}
-	if (isBlocked(col, row))
-	{
-		return false;
-	}
+	if (!((col == getCol()) ^ (row == getRow())))
+    {
+        B._code = 6;
+    return false;
+    }
+    if (isBlocked(col, row))
+    {
+        B._code = 6;
+        return false;
+    }
     
 	return true;
 }

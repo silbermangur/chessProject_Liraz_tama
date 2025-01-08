@@ -1,5 +1,5 @@
 #include "King.h"
-King::King(int col, int row, Board& board, char type) :
+King::King(int row, int col, Board& board, char type) :
     Tool(col, row, board, type)
 {
     B._board[row][col] = this;
@@ -29,24 +29,20 @@ bool King::checkChess() const
 
 bool King::isBlocked(int col, int row) const
 {
-    if (B._board[getRow()][col] != nullptr && std::islower(getType()) == std::islower(B._board[row][col]->getType()))
-    {
-        return true;
-    }
-
     return false;
 }
 
 bool King::isMoveLegal(int col, int row) const
 {
-    if (col > 7 || col < 0 || row < 0 || row > 7 || abs(col - getCol()) > 1 || abs(row - getRow()) > 1)
+    if (abs(col - getCol()) > 1 || abs(row - getRow()) > 1)
     {
+        B._code = 6;
         return false;
     }
     if (isBlocked(col, row))
     {
+        B._code = 6;
         return false;
     }
-
     return true;
 }

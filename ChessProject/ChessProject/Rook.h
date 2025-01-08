@@ -7,7 +7,7 @@ class Board;
 
 class Rook : public Tool {
 public:
-    Rook(int col, int row, Board& board, char type);
+    Rook(int row, int col, Board& board, char type);
     void move(int col, int row) ;
     bool checkChess() const;
     bool isBlocked(int col, int row) const ;

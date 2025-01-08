@@ -5,6 +5,8 @@ in order to read and write information from and to the Backend
 */
 
 #include "Pipe.h"
+#include "LocationException.h"
+#include "Board.h"
 #include <iostream>
 #include <thread>
 
@@ -15,6 +17,18 @@ using std::string;
 
 void main()
 {
+	Board B;
+	B.print();
+	try
+	{
+		B.move(8, 'a', 6, 'a');
+	}
+	catch (LocationException e)
+	{
+		std::cout << e.what() << "\n";
+	}
+	
+	B.print();
 	//srand(time_t(NULL));
 
 	//

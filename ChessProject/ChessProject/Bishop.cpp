@@ -1,5 +1,5 @@
 #include "Bishop.h"
-Bishop::Bishop(int col, int row, Board& board, char type) :
+Bishop::Bishop(int row, int col, Board& board, char type) :
     Tool(col, row, board, type)
 {
     B._board[row][col] = this;
@@ -29,11 +29,7 @@ bool Bishop::checkChess() const
 
 bool Bishop::isBlocked(int col, int row) const
 {
-    if (B._board[getRow()][col] != nullptr && std::islower(getType()) == std::islower(B._board[row][col]->getType()))
-    {
-        return true;
-    }
- 
+
     int i = 1;
     int  firstCol = getCol();
     int  lestCol = col;
@@ -62,12 +58,14 @@ bool Bishop::isBlocked(int col, int row) const
 
 bool Bishop::isMoveLegal(int col, int row) const
 {
-    if (col > 7 || col < 0 || row < 0 || row > 7 || abs(col - getCol()) != abs(row - getRow()) || row == getRow())
+    if (abs(col - getCol()) != abs(row - getRow()))
     {
+        B._code = 6;
         return false;
     }
     if (isBlocked(col, row))
     {
+        B._code = 6;
         return false;
     }
 
