@@ -130,6 +130,8 @@
     <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="King.cpp" />
+    <ClCompile Include="Knight.cpp" />
+    <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Rook.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="stdafx.cpp" />
@@ -139,7 +141,9 @@
     <ClInclude Include="Bishop.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="King.h" />
+    <ClInclude Include="Knight.h" />
     <ClInclude Include="LocationException.h" />
+    <ClInclude Include="Pawn.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Rook.h" />
     <ClInclude Include="stdafx.h" />
