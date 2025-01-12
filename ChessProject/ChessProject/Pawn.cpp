@@ -32,16 +32,25 @@ bool Pawn::isMoveLegal(int col, int row) const
         different = -1;
         start = 6;
     }
-    if (getRow() + different == row && abs(col - getCol()) == 1 && isBlocked(col, row))
+    if (row == getRow() + different && col == getCol() && B._board[row][col] == nullptr)
+    {
         return true;
-    if (getRow() != start && ((row - getRow() != different || B._board[row][col] != nullptr) || col - getCol() != 0))
-        return false;
-    else if (getRow() == start && (((row - getRow() != different || row - getRow() != 2*different) || B._board[row][col] != nullptr) || col - getCol() != 0))
-        return false;
-    return true;
+    }
+    if (getRow() == different && row == getRow() + 2 * different && col == getCol() &&
+        B._board[getRow() + different][col] == nullptr && B._board[row][col] == nullptr)
+    {
+        return true;
+    }
+    if (row == getRow() + different && abs(col - getCol()) == 1 && !isBlocked(col, row))
+    {
+        return true;
+    }
+    B._code = 6;
+    return false;
+
 }
 
 bool Pawn::isBlocked(int col, int row) const
 {
-    return B._board[row][col] != nullptr && std::islower(B._board[row][col]->getType()) != std::islower(getType());
+    return B._board[row][col] == nullptr;
 }

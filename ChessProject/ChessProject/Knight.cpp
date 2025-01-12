@@ -1,7 +1,7 @@
 #include "Knight.h"
 
 Knight::Knight(int col, int row, Board& board, char type) :
-	Tool(col, row, board, type)
+    Tool(col, row, board, type)
 {
 	B._board[row][col] = this;
 }
@@ -25,12 +25,19 @@ void Knight::move(int col, int row)
 
 bool Knight::isBlocked(int col, int row) const
 {
-    return !((abs(col - getCol()) == 1 && abs(row - getRow()) == 2) || (abs(col - getCol()) == 2 && abs(row - getRow()) == 1));
+    return false;
 }
 
 bool Knight::isMoveLegal(int col, int row) const
 {
-    if (isBlocked(col, row))
+    int rowDiff = abs(getRow() - row);
+    int colDiff = abs(getCol() - col);
+
+    if ((rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2))
+    {
         return true;
+    }
+
+    B._code = 6;
     return false;
 }

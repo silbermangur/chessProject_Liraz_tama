@@ -21,7 +21,7 @@ void main()
 	B.print();
 	try
 	{
-		B.move(8, 'a', 6, 'a');
+		B.move(2, 'a', 4, 'a');
 	}
 	catch (LocationException e)
 	{

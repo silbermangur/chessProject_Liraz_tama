@@ -8,7 +8,7 @@ class Board;
 class King : public Tool
 {
 public:
-    King(int row, int col, Board& board, char type);
+    King(int col, int row, Board& board, char type);
     void move(int col, int row);
     bool checkChess() const;
     bool isBlocked(int col, int row) const;

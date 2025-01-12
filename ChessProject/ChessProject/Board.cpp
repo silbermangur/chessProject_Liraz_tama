@@ -1,14 +1,39 @@
 #include "Board.h"
 #include "Rook.h"
+#include "Knight.h"
+#include "Bishop.h"
+#include "Queen.h"
 #include "King.h"
+#include "Pawn.h"
 Board::Board()
 {
-	_kingBlack = new King(0, 3, *this, 'k');
-	_kingWhite = new King(7, 3, *this, 'K');
-	new Rook(0, 7, *this, 'r');
-	new Rook(0, 0, *this, 'r');
+	_kingBlack = new King(3, 0, *this, 'k');
+	_kingWhite = new King(3, 7, *this, 'K');
+	
+	for (int col = 0; col < 8; col++)
+	{
+		new Pawn(col, 1, *this, 'P');
+		new Pawn(col, 6, *this, 'p');
+	}
+
+	new Rook(0, 0, *this, 'R');
 	new Rook(7, 0, *this, 'R');
-	new Rook(7, 7, *this, 'R');
+	new Rook(0, 7, *this, 'r');
+	new Rook(7, 7, *this, 'r');
+	
+	new Knight(1, 0, *this, 'N');
+	new Knight(6, 0, *this, 'N');
+	new Knight(1, 7, *this, 'n');
+	new Knight(6, 7, *this, 'n');
+
+	new Bishop(2, 0, *this, 'B');
+	new Bishop(5, 0, *this, 'B');
+	new Bishop(2, 7, *this, 'b');
+    new Bishop(5, 7, *this, 'b');
+
+	new Queen(4, 0, *this, 'Q');
+	new Queen(4, 7, *this, 'q');
+	std::cout << boardString();
 }
 
 Board::~Board()
@@ -57,7 +82,6 @@ std::string Board::boardString()
 	{
 		for (c = 0; c < 8; c++)
 		{
-			std::cout << r + 1 << "  ";
 			if (_board[r][c] == nullptr)
 			{
 				boardString += "#";

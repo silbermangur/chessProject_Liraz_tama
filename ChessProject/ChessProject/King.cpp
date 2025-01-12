@@ -1,5 +1,5 @@
 #include "King.h"
-King::King(int row, int col, Board& board, char type) :
+King::King(int col, int row, Board& board, char type) :
     Tool(col, row, board, type)
 {
     B._board[row][col] = this;
@@ -20,11 +20,6 @@ void King::move(int col, int row)
         return;
     }
     throw LocationException();
-}
-
-bool King::checkChess() const
-{
-    return false;
 }
 
 bool King::isBlocked(int col, int row) const

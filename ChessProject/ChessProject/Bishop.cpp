@@ -1,9 +1,12 @@
 #include "Bishop.h"
-Bishop::Bishop(int row, int col, Board& board, char type) :
+Bishop::Bishop(int col, int row, Board& board, char type) :
     Tool(col, row, board, type)
 {
     B._board[row][col] = this;
 }
+Bishop::Bishop(int col, int row, Board& board) :
+    Tool(col, row, board, NULL)
+{}
 
 void Bishop::move(int col, int row)
 {

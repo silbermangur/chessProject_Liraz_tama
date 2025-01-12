@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Tool.h"
-#include "Bishop.h"
 #include "Rook.h"
+#include "Bishop.h"
 class Board;
 
-class Queen : public Bishop, public Rook
+class Queen :  public Tool
 {
 public:
 	Queen(int col, int row, Board& board, char type);

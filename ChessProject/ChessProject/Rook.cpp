@@ -1,10 +1,13 @@
 #include "Rook.h"
 
-Rook::Rook(int row, int col, Board& board, char type):
+Rook::Rook(int col, int row, Board& board, char type) :
     Tool(col, row, board, type)
 {
     B._board[row][col] = this;
 }
+Rook::Rook(int col, int row, Board& board) :
+    Tool(col, row, board, NULL)
+{}
 
 void Rook::move(int col, int row)
 {
