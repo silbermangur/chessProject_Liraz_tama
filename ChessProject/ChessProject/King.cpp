@@ -9,14 +9,26 @@ void King::move(int col, int row)
 {
     if (isMoveLegal(col, row))
     {
-        if (B._board[row][col] != nullptr)
-        {
-            delete(B._board[row][col]);
-        }
+        int c = getCol();
+        int r = getRow();
+        Tool* dest = B._board[row][col];
         B._board[row][col] = B._board[getRow()][getCol()];
         B._board[getRow()][getCol()] = nullptr;
         setCol(col);
         setRow(row);
+        if (B.checkChess())
+        {
+            B._board[r][c] = B._board[row][col];
+            B._board[row][col] = dest;
+            setCol(c);
+            setRow(r);
+            B._code = 4;
+            throw LocationException();
+        }
+        else if(dest != nullptr)
+        {
+            delete(B._board[row][col]);
+        }
         return;
     }
     throw LocationException();

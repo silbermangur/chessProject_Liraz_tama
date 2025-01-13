@@ -10,7 +10,6 @@ class King : public Tool
 public:
     King(int col, int row, Board& board, char type);
     void move(int col, int row);
-    bool checkChess() const;
     bool isBlocked(int col, int row) const;
     bool isMoveLegal(int col, int row) const;
 };

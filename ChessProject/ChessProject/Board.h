@@ -20,5 +20,6 @@ public:
 	void print();
 	std::string boardString();
 	void move(char fromR, int fromC, char toR, int toC);
+	bool checkChess() const;
 };
 
