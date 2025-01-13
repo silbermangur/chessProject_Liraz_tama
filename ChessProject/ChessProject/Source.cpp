@@ -18,76 +18,63 @@ using std::string;
 void main()
 {
 	Board B;
-	B.print();
-	try
+
+	Pipe p;
+	bool isConnect = p.connect();
+	
+	string ans;
+	while (!isConnect)
 	{
-		B.move(2, 'a', 4, 'a');
-	}
-	catch (LocationException e)
-	{
-		std::cout << e.what() << "\n";
+		cout << "cant connect to graphics" << endl;
+		cout << "Do you try to connect again or exit? (0-try again, 1-exit)" << endl;
+		std::cin >> ans;
+
+		if (ans == "0")
+		{
+			cout << "trying connect again.." << endl;
+			Sleep(5000);
+			isConnect = p.connect();
+		}
+		else 
+		{
+			p.close();
+			return;
+		}
 	}
 	
-	B.print();
-	//srand(time_t(NULL));
 
-	//
-	//Pipe p;
-	//bool isConnect = p.connect();
-	//
-	//string ans;
-	//while (!isConnect)
-	//{
-	//	cout << "cant connect to graphics" << endl;
-	//	cout << "Do you try to connect again or exit? (0-try again, 1-exit)" << endl;
-	//	std::cin >> ans;
+	char msgToGraphics[1024];
+	// msgToGraphics should contain the board string accord the protocol
+	// YOUR CODE
 
-	//	if (ans == "0")
-	//	{
-	//		cout << "trying connect again.." << endl;
-	//		Sleep(5000);
-	//		isConnect = p.connect();
-	//	}
-	//	else 
-	//	{
-	//		p.close();
-	//		return;
-	//	}
-	//}
-	//
+	strcpy_s(msgToGraphics,	B.boardString().c_str());
 
-	//char msgToGraphics[1024];
-	//// msgToGraphics should contain the board string accord the protocol
-	//// YOUR CODE
+	
+	p.sendMessageToGraphics(msgToGraphics);   // send the board string
 
-	//strcpy_s(msgToGraphics, "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR1"); // just example...
-	//
-	//p.sendMessageToGraphics(msgToGraphics);   // send the board string
+	// get message from graphics
+	string msgFromGraphics = p.getMessageFromGraphics();
+	while (msgFromGraphics != "quit")
+	{
+		B.move(msgFromGraphics[1], msgFromGraphics[0], msgFromGraphics[3], msgFromGraphics[2]);
+		// should handle the string the sent from graphics
+		// according the protocol. Ex: e2e4           (move e2 to e4)
+		
+		// YOUR CODE
+		strcpy_s(msgToGraphics, "YOUR CODE"); // msgToGraphics should contain the result of the operation
 
-	//// get message from graphics
-	//string msgFromGraphics = p.getMessageFromGraphics();
+		/******* JUST FOR EREZ DEBUGGING ******/
+		int r = rand() % 10; // just for debugging......
+		msgToGraphics[0] = (char)(B._code + '0');
+		msgToGraphics[1] = 0;
+		/******* JUST FOR EREZ DEBUGGING ******/
 
-	//while (msgFromGraphics != "quit")
-	//{
-	//	// should handle the string the sent from graphics
-	//	// according the protocol. Ex: e2e4           (move e2 to e4)
-	//	
-	//	// YOUR CODE
-	//	strcpy_s(msgToGraphics, "YOUR CODE"); // msgToGraphics should contain the result of the operation
+		// return result to graphics		
+		p.sendMessageToGraphics(msgToGraphics);   
 
-	//	/******* JUST FOR EREZ DEBUGGING ******/
-	//	int r = rand() % 10; // just for debugging......
-	//	msgToGraphics[0] = (char)(1 + '0');
-	//	msgToGraphics[1] = 0;
-	//	/******* JUST FOR EREZ DEBUGGING ******/
+		// get message from graphics
+		msgFromGraphics = p.getMessageFromGraphics();
+	}
 
-
-	//	// return result to graphics		
-	//	p.sendMessageToGraphics(msgToGraphics);   
-
-	//	// get message from graphics
-	//	msgFromGraphics = p.getMessageFromGraphics();
-	//}
-
-	//p.close();
+	p.close();
 }

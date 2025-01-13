@@ -7,33 +7,32 @@
 #include "Pawn.h"
 Board::Board()
 {
-	_kingBlack = new King(3, 0, *this, 'k');
-	_kingWhite = new King(3, 7, *this, 'K');
+	_kingBlack = new King(3, 7, *this, 'k', 1);
+	_kingWhite = new King(3, 0, *this, 'K', 0);
 	
 	for (int col = 0; col < 8; col++)
 	{
-		new Pawn(col, 1, *this, 'P');
-		new Pawn(col, 6, *this, 'p');
+		new Pawn(col, 6, *this, 'p', 1);
+		new Pawn(col, 1, *this, 'P', 0);
 	}
 
-	new Rook(0, 0, *this, 'R');
-	new Rook(7, 0, *this, 'R');
-	new Rook(0, 7, *this, 'r');
-	new Rook(7, 7, *this, 'r');
+	new Rook(0, 0, *this, 'R', 0);
+	new Rook(7, 0, *this, 'R', 0);
+	new Rook(0, 7, *this, 'r', 1);
+	new Rook(7, 7, *this, 'r', 1);
 	
-	new Knight(1, 0, *this, 'N');
-	new Knight(6, 0, *this, 'N');
-	new Knight(1, 7, *this, 'n');
-	new Knight(6, 7, *this, 'n');
+	new Knight(1, 0, *this, 'N', 0);
+	new Knight(6, 0, *this, 'N', 0);
+	new Knight(1, 7, *this, 'n', 1);
+	new Knight(6, 7, *this, 'n', 1);
 
-	new Bishop(2, 0, *this, 'B');
-	new Bishop(5, 0, *this, 'B');
-	new Bishop(2, 7, *this, 'b');
-    new Bishop(5, 7, *this, 'b');
+	new Bishop(2, 0, *this, 'B', 0);
+	new Bishop(5, 0, *this, 'B', 0);
+	new Bishop(2, 7, *this, 'b', 1);
+	new Bishop(5, 7, *this, 'b', 1);
 
-	new Queen(4, 0, *this, 'Q');
-	new Queen(4, 7, *this, 'q');
-	std::cout << boardString();
+	new Queen(4, 0, *this, 'Q', 0);
+	new Queen(4, 7, *this, 'q', 1);
 }
 
 Board::~Board()
@@ -78,7 +77,7 @@ std::string Board::boardString()
 	std::string boardString = "";
 	int r = 0;
 	int c = 0;
-	for (r = 0; r < 8; r++)
+	for (r = 7; r >= 0; r--)
 	{
 		for (c = 0; c < 8; c++)
 		{
@@ -96,12 +95,12 @@ std::string Board::boardString()
 	return boardString;
 }
 
-void Board::move(char fromR, int fromC, char toR, int toC)
+void Board::move(char fromR, char fromC, char toR, char toC)
 {
 	fromC -= 'a';
-	fromR -= 1;
+	fromR -= '1';
 	toC -= 'a';
-	toR -= 1;
+	toR -= '1';
 	if (fromC > 7 || fromC < 0 || toC > 7 || toC < 0 || fromR < 0 || fromR > 7 || toR < 0 || toR > 7)
 	{
 		_code = 5;
@@ -112,7 +111,7 @@ void Board::move(char fromR, int fromC, char toR, int toC)
 		_code = 7;
 		return;
 	}
-	if (_board[fromR][fromC] == nullptr || std::islower(_board[fromR][fromC]->getType()) != (_player != 0))
+	if (_board[fromR][fromC] == nullptr || _player != _board[fromR][fromC]->_player)
 	{
 		_code = 2;
 		return;
@@ -125,7 +124,7 @@ void Board::move(char fromR, int fromC, char toR, int toC)
 	try
 	{
 		_board[fromR][fromC]->move(toC, toR);
-	    _player = (std::islower(_board[toR][toC]->getType())) ? 0 : 1;
+		_player = (_player == 0) ? 1 : 0;
 		_code = (Board::checkChess()) ? 1 : 0;
 	}
 	catch (const std::exception&)
@@ -133,7 +132,7 @@ void Board::move(char fromR, int fromC, char toR, int toC)
 	
 }
 
-bool Board::checkChess() const 
+bool Board::checkChess()  
 {
 	int r = 0;
 	int c = 0;
@@ -142,9 +141,9 @@ bool Board::checkChess() const
 	{
 		for (c = 0; c < 8; c++)
 		{
-			if (_board[r][c] != nullptr && std::islower(_board[r][c]->getType()) == (_player == 0))
+			if (_board[r][c] != nullptr && _board[r][c]->_player != _player)
 			{
-				if (std::islower(_board[r][c]->isMoveLegal(k->getCol(), k->getRow())))
+				if (_board[r][c]->isMoveLegal(k->getCol(), k->getRow()))
 				{
 					return true;
 				}

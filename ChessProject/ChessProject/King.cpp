@@ -1,6 +1,6 @@
 #include "King.h"
-King::King(int col, int row, Board& board, char type) :
-    Tool(col, row, board, type)
+King::King(int col, int row, Board& board, char type, int player) :
+    Tool(col, row, board, type, player)
 {
     B._board[row][col] = this;
 }
@@ -12,22 +12,22 @@ void King::move(int col, int row)
         int c = getCol();
         int r = getRow();
         Tool* dest = B._board[row][col];
-        B._board[row][col] = B._board[getRow()][getCol()];
+        B._board[row][col] = this;
         B._board[getRow()][getCol()] = nullptr;
         setCol(col);
         setRow(row);
         if (B.checkChess())
         {
-            B._board[r][c] = B._board[row][col];
+            B._board[r][c] = this;
             B._board[row][col] = dest;
             setCol(c);
             setRow(r);
             B._code = 4;
             throw LocationException();
         }
-        else if(dest != nullptr)
+        else if (dest)
         {
-            delete(B._board[row][col]);
+            delete(dest);
         }
         return;
     }

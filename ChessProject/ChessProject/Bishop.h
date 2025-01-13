@@ -7,7 +7,7 @@ class Board;
 class Bishop : public Tool
 {
 public:
-	Bishop(int col, int row, Board& board, char type);
+	Bishop(int col, int row, Board& board, char type, int player);
 	Bishop(int col, int row, Board& board);
 	void move(int col, int row);
 	bool checkChess() const;

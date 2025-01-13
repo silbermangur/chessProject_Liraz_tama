@@ -7,19 +7,19 @@
 class Tool;
 class Board
 {
-public:
-	Tool* _board[8][8] = {nullptr};
+	int _player = 0;
 	Tool* _kingWhite;
 	Tool* _kingBlack;
+public:
+	Tool* _board[8][8] = {nullptr};
 	int _code;
-	int _player = 0;
 
 	Board();
 	~Board();
 	
 	void print();
 	std::string boardString();
-	void move(char fromR, int fromC, char toR, int toC);
-	bool checkChess() const;
+	void move(char fromR, char fromC, char toR, char toC);
+	bool checkChess() ;
 };
 

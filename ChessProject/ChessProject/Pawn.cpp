@@ -1,7 +1,7 @@
 #include "Pawn.h"
 
-Pawn::Pawn(int col, int row, Board& board, char type) :
-    Tool(col, row, board, type)
+Pawn::Pawn(int col, int row, Board& board, char type, int player) :
+    Tool(col, row, board, type, player)
 {
     B._board[row][col] = this;
 }
@@ -10,14 +10,26 @@ void Pawn::move(int col, int row)
 {
     if (isMoveLegal(col, row))
     {
-        if (B._board[row][col] != nullptr)
-        {
-            delete(B._board[row][col]);
-        }
-        B._board[row][col] = B._board[getRow()][getCol()];
+        int c = getCol();
+        int r = getRow();
+        Tool* dest = B._board[row][col];
+        B._board[row][col] = this;
         B._board[getRow()][getCol()] = nullptr;
         setCol(col);
         setRow(row);
+        if (B.checkChess())
+        {
+            B._board[r][c] = this;
+            B._board[row][col] = dest;
+            setCol(c);
+            setRow(r);
+            B._code = 4;
+            throw LocationException();
+        }
+        else if (dest)
+        {
+            delete(dest);
+        }
         return;
     }
     throw LocationException();
@@ -36,8 +48,7 @@ bool Pawn::isMoveLegal(int col, int row) const
     {
         return true;
     }
-    if (getRow() == different && row == getRow() + 2 * different && col == getCol() &&
-        B._board[getRow() + different][col] == nullptr && B._board[row][col] == nullptr)
+    if (getRow() == start && row == getRow() + 2 * different && col == getCol() && B._board[getRow() + different][col] == nullptr && B._board[row][col] == nullptr)
     {
         return true;
     }

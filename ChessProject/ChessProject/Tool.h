@@ -13,8 +13,8 @@ class Tool
 	int _row;
 	int _col;
 public:
-
-	Tool(int col, int row, Board& board, char type);
+	int _player;
+	Tool(int col, int row, Board& board, char type, int player);
 	virtual ~Tool() {}
 	
 	virtual void move(int col, int row) = 0; 

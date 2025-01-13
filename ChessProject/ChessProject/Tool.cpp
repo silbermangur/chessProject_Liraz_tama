@@ -1,6 +1,6 @@
 #include "Tool.h"
-Tool::Tool(int col, int row, Board& board, char type)
-	:_col(col), _row(row), _type(type), B(board)
+Tool::Tool(int col, int row, Board& board, char type, int player)
+	:_col(col), _row(row), _type(type), B(board), _player(player)
 {}
 
 
