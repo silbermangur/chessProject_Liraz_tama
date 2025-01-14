@@ -50,32 +50,38 @@ void Bishop::move(int col, int row)
 */
 bool Bishop::isBlocked(int col, int row) const
 {
+    int i = 1; // Direction of horizontal movement: 1 for right, -1 for left
+    int firstCol = getCol(); // Column of the current position of the bishop
+    int lastCol = col; // Target column
+    int minRow = std::min(getRow(), row); // The lower of the two rows
+    int maxRow = std::max(getRow(), row); // The higher of the two rows
 
-    int i = 1;
-    int  firstCol = getCol();
-    int  lestCol = col;
-    int minRow = std::min(getRow(), row);
-    int maxRow = std::max(getRow(), row);
+    // Determine which column starts first based on the row direction
     if (maxRow == getRow())
     {
         firstCol = col;
-        lestCol = getCol();
+        lastCol = getCol();
     }
-    if (firstCol > lestCol)
+
+    // Determine the horizontal movement direction
+    if (firstCol > lastCol)
     {
-        i = -1;
+        i = -1; // Move left if the starting column is greater than the ending column
     }
-    for (int row = minRow + 1; row < maxRow; row++)
+
+    // Check for any blocking pieces in the path
+    for (int currentRow = minRow + 1; currentRow < maxRow; currentRow++)
     {
-        firstCol += i;
-        if (B._board[row][firstCol] != nullptr)
+        firstCol += i; // Move horizontally in the specified direction
+        if (B._board[currentRow][firstCol] != nullptr) // If there's a piece on the path
         {
-            return true;
+            return true; // Path is blocked
         }
     }
 
-    return false;
+    return false; // Path is clear
 }
+
 
 /*
  Role: Checks if a move is legal for the Queen
