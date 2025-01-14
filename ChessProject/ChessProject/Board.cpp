@@ -116,7 +116,7 @@ void Board::move(char fromR, char fromC, char toR, char toC)
 		_code = 2;
 		return;
 	}
-	if (_board[toR][toC] != nullptr && std::islower(_board[toR][toC]->getType()) == (_player != 0))
+	if (_board[toR][toC] != nullptr && _board[toR][toC]->_player == _player)
 	{
 		_code = 3;
 		return;
