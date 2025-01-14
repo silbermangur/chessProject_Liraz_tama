@@ -1,9 +1,3 @@
-/*
-This file servers as an example of how to use Pipe.h file.
-It is recommended to use the following code in your project, 
-in order to read and write information from and to the Backend
-*/
-
 #include "Pipe.h"
 #include "LocationException.h"
 #include "Board.h"
@@ -14,67 +8,59 @@ using std::cout;
 using std::endl;
 using std::string;
 
-
+// Role: Main function to manage communication with the graphics backend and handle chess moves.
+// Input: None
+// Output: None (Operates as a controller for the chess game)
 void main()
 {
-	Board B;
+    Board B; // Initialize the chessboard
 
-	Pipe p;
-	bool isConnect = p.connect();
-	
-	string ans;
-	while (!isConnect)
-	{
-		cout << "cant connect to graphics" << endl;
-		cout << "Do you try to connect again or exit? (0-try again, 1-exit)" << endl;
-		std::cin >> ans;
+    Pipe p;
+    bool isConnect = p.connect(); // Attempt to connect to the graphics interface
 
-		if (ans == "0")
-		{
-			cout << "trying connect again.." << endl;
-			Sleep(5000);
-			isConnect = p.connect();
-		}
-		else 
-		{
-			p.close();
-			return;
-		}
-	}
-	
+    string ans;
+    while (!isConnect)
+    {
+        cout << "Cannot connect to graphics" << endl;
+        cout << "Do you want to try again or exit? (0 - Try again, 1 - Exit)" << endl;
+        std::cin >> ans;
 
-	char msgToGraphics[1024];
-	// msgToGraphics should contain the board string accord the protocol
-	// YOUR CODE
+        if (ans == "0")
+        {
+            cout << "Trying to connect again..." << endl;
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            isConnect = p.connect();
+        }
+        else
+        {
+            p.close();
+            return;
+        }
+    }
 
-	strcpy_s(msgToGraphics,	B.boardString().c_str());
+    char msgToGraphics[1024];
 
-	
-	p.sendMessageToGraphics(msgToGraphics);   // send the board string
+    // Send the initial board state to the graphics
+    strcpy_s(msgToGraphics, B.boardString().c_str());
+    p.sendMessageToGraphics(msgToGraphics);
 
-	// get message from graphics
-	string msgFromGraphics = p.getMessageFromGraphics();
-	while (msgFromGraphics != "quit")
-	{
-		B.move(msgFromGraphics[1], msgFromGraphics[0], msgFromGraphics[3], msgFromGraphics[2]);
-		// should handle the string the sent from graphics
-		// according the protocol. Ex: e2e4           (move e2 to e4)
-		
-		// YOUR CODE
-		strcpy_s(msgToGraphics, "YOUR CODE"); // msgToGraphics should contain the result of the operation
+    // get message from graphics
+    string msgFromGraphics = p.getMessageFromGraphics();
+    while (msgFromGraphics != "quit")
+    {
+        B.move(msgFromGraphics[1], msgFromGraphics[0], msgFromGraphics[3], msgFromGraphics[2]);
 
-		/******* JUST FOR EREZ DEBUGGING ******/
-		int r = rand() % 10; // just for debugging......
-		msgToGraphics[0] = (char)(B._code + '0');
-		msgToGraphics[1] = 0;
-		/******* JUST FOR EREZ DEBUGGING ******/
+        // Prepare response message for the graphics interface
+        msgToGraphics[0] = (char)(B._code + '0');
+        msgToGraphics[1] = '\0';
 
-		// return result to graphics		
-		p.sendMessageToGraphics(msgToGraphics);   
+        // Send the result of the operation back to the graphics
+        p.sendMessageToGraphics(msgToGraphics);
 
-		// get message from graphics
-		msgFromGraphics = p.getMessageFromGraphics();
-	}
+        // Receive the next message from the graphics
+        msgFromGraphics = p.getMessageFromGraphics();
+    }
 
-	p.close();
+    // Close the connection to the graphics interface
+    p.close();
 }

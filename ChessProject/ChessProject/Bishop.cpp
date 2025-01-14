@@ -37,11 +37,6 @@ void Bishop::move(int col, int row)
     throw LocationException();
 }
 
-bool Bishop::checkChess() const
-{
-    return false;
-}
-
 bool Bishop::isBlocked(int col, int row) const
 {
 

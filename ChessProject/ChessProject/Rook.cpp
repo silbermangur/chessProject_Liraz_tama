@@ -9,21 +9,24 @@ Rook::Rook(int col, int row, Board& board) :
     Tool(col, row, board, NULL, 0)
 {}
 
+// Role: Moves the Queen to a specified location
+// Input: Target column (col) and row (row)
+// Output: Updates the Rook's position, or throws an exception if the move is illegal.
 void Rook::move(int col, int row)
 {
     if (isMoveLegal(col, row))
     {
         int c = getCol();
         int r = getRow();
-        Tool* dest = B._board[row][col];
+        Tool* dest = B._board[row][col];// Save destination piece
         B._board[row][col] = this;
-        B._board[getRow()][getCol()] = nullptr;
+        B._board[getRow()][getCol()] = nullptr; // Clear previous position
         setCol(col);
         setRow(row);
-        if (B.checkChess())
+        if (B.checkChess()) // Check if move puts King in check
         {
-            B._board[r][c] = this;
-            B._board[row][col] = dest;
+            B._board[r][c] = this; // Revert position
+            B._board[row][col] = dest; // Restore destination piece
             setCol(c);
             setRow(r);
             B._code = 4;
@@ -31,18 +34,16 @@ void Rook::move(int col, int row)
         }
         else if (dest)
         {
-            delete(dest);
+            delete(dest); // Delete the captured piece
         }
         return;
     }
-    throw LocationException();
+    throw LocationException(); // Throw exception if move is illegal
 }
 
-bool Rook::checkChess() const
-{
-	return false;
-}
-
+// Role: Checks if the Rook's path to a target position is blocked
+// Input: Target column (col) and row (row)
+// Output: Returns true if the path is blocked, false otherwise.
 bool Rook::isBlocked(int col, int row) const
 {
     if (getRow() == row)
@@ -72,7 +73,9 @@ bool Rook::isBlocked(int col, int row) const
 
     return false;
 }
-
+// Role: Checks if a move is legal for the Queen
+// Input: Target column (col) and row (row)
+// Output: Returns true if the move is legal, false otherwise
 bool Rook::isMoveLegal(int col, int row) const
 {
 	if (!((col == getCol()) ^ (row == getRow())))
