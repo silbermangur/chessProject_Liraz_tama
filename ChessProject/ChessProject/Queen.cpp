@@ -39,12 +39,12 @@ bool Queen::isBlocked(int col, int row) const
 {
     if (getRow() == row || getCol() == col)
     {
-        Rook tempRook(getRow(), getCol(), B);
+        Rook tempRook(getCol(), getRow(), B);
         return tempRook.isBlocked(col, row);
     }
     else
     {
-        Bishop tempBishop(getRow(), getCol(), B);
+        Bishop tempBishop(getCol(), getRow(), B);
         return tempBishop.isBlocked(col, row);
     }
 }
