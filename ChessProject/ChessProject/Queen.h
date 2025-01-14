@@ -5,7 +5,7 @@
 #include "Bishop.h"
 class Board;
 
-class Queen :  public Tool
+class Queen : public Tool
 {
 public:
 	Queen(int col, int row, Board& board, char type, int player);

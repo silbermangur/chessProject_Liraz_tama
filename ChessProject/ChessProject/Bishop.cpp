@@ -1,4 +1,5 @@
 #include "Bishop.h"
+
 Bishop::Bishop(int col, int row, Board& board, char type, int player) :
     Tool(col, row, board, type, player)
 {
@@ -8,35 +9,45 @@ Bishop::Bishop(int col, int row, Board& board) :
     Tool(col, row, board, NULL, 0)
 {}
 
+/*
+Role: Moves the Bishop to a specified location
+Input: Target column (col) and row (row)
+Output: Updates the Bishop's position, or throws an exception if the move is illegal.
+*/
 void Bishop::move(int col, int row)
 {
     if (isMoveLegal(col, row))
     {
         int c = getCol();
         int r = getRow();
-        Tool* dest = B._board[row][col];
+        Tool* dest = B._board[row][col]; // Save destination piece
         B._board[row][col] = this;
-        B._board[getRow()][getCol()] = nullptr;
+        B._board[getRow()][getCol()] = nullptr; // Clear previous position
         setCol(col);
         setRow(row);
-        if (B.checkChess())
+        if (B.checkChess()) // Check if move puts King in check
         {
-            B._board[r][c] = this;
-            B._board[row][col] = dest;
+            B._board[r][c] = this; // Revert position
+            B._board[row][col] = dest; // Restore destination piece
             setCol(c);
             setRow(r);
             B._code = 4;
             throw LocationException();
         }
-        else if (dest != nullptr)
+        else if (dest)
         {
-            delete(B._board[row][col]);
+            delete(dest); // Delete the captured piece
         }
         return;
     }
-    throw LocationException();
+    throw LocationException(); // Throw exception if move is illegal
 }
 
+/*
+ Role: Checks if the Bishop's path to a target position is blocked
+ Input: Target column (col) and row (row)
+ Output: Returns true if the path is blocked, false otherwise.
+*/
 bool Bishop::isBlocked(int col, int row) const
 {
 
@@ -66,14 +77,20 @@ bool Bishop::isBlocked(int col, int row) const
     return false;
 }
 
+/*
+ Role: Checks if a move is legal for the Queen
+ Input: Target column (col) and row (row)
+ Output: Returns true if the move is legal, false otherwise, updating the board's error code if invalid.
+*/
 bool Bishop::isMoveLegal(int col, int row) const
 {
-    if (abs(col - getCol()) != abs(row - getRow()))
+    // The Bishop's movement will always be the same number of rows and columns from its current position
+    if (abs(col - getCol()) != abs(row - getRow())) // if it's not return false with code 6 error
     {
         B._code = 6;
         return false;
     }
-    if (isBlocked(col, row))
+    if (isBlocked(col, row)) // if the Bishop blocked return false with code 6 error
     {
         B._code = 6;
         return false;
